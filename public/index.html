@@ -8,10 +8,52 @@
     <title>Guac Wallet</title>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js"></script>
+    <link href="https://cdn.okra.ng/okra.css" rel="stylesheet" />
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js'></script>
 </head>
 
-<body>
+<body onload="onLoadFunct()">
     <div id="root"></div>
+<script type='text/javascript'>
+function onLoadFunct(){
+    (function($) {
+    var btn = document.querySelector('#Okra');
+        console.log('dom', btn);
+    btn.addEventListener('click', function(){
+      var client = new okra.create();
+      var options = {
+          // options are 'sandbox' and 'production'
+          env: 'sandbox', 
+
+          clientName: 'Okra Demo',
+          
+          token: 'token',
+          // Replace with your key from the Dashboard
+          key: 'KEY',
+          // Optional, use callbacks to get transaction and error updates
+          callback_url: 'CALLBACK_URL',
+          // Optional, specify user data for identity product
+          options: {
+            user: {
+            fullname: 'USER_FULL_NAME',
+            email: 'USER_EMAIL',
+            bvn: 'USER_BVN'
+          },
+          },
+          // producrs to initiate
+          products: ['auth', 'transactions', 'balance', 'income', 'identity'],
+          onSuccess: (json) => {
+          },
+          onClose: (json) => {
+          }
+      }
+      client.open(options);
+  });
+})(jQuery);
+}
+
+</script>
+<script src='https://cdn.okra.ng/okra.min.js' ></script>
 </body>
 
 </html>

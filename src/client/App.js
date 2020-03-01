@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import ToolBar from './toolbar/toolbar';
 import TopBar from './Topbar/topbar';
 import Transaction from './Transaction/transaction';
-import { fetchUserinfo } from './store/actions/index';
+import { fetchUserinfo, fetchCredit } from './store/actions/index';
 import format from './utility/format';
 import Unity from './unity.png';
 import './app.css';
@@ -20,10 +20,16 @@ class App extends Component {
     this.props.fetchuserinfo();
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.acct !== prevProps.acct) {
+      this.props.postAccount(this.props.acct);
+    }
+  }
+
   render() {
     /* const { username } = this.state; */
     // eslint-disable-next-line react/destructuring-assignment
-    console.log('{data}', this.props.username, this.props.totalbalance);
+    console.log('hello');
     // console.log('user', this.props.userinfo[0].username);
     return (
       <div className="Bg">
@@ -50,8 +56,8 @@ class App extends Component {
                 <div>{format(+this.props.totaldebit) || ''}</div>
               </div>
             </div>
-            <div className="Submit_Bt">
-              <button className="submit_btn">Connect Your Bank</button>
+            <div className="Submit_Bt" id="okra-enabled">
+              <button className="submit_btn" id="Okra">Connect your bank with Okra</button>
             </div>
           </div>
           {/* {username ? <h1>{`Hello ${username}`}</h1> : <h1>Loading.. please wait!</h1>} */}
@@ -61,11 +67,13 @@ class App extends Component {
     );
   }
 }
+
 // eslint-disable-next-line arrow-parens
 const mapStateToProps = state =>{
   return {
     username: state.user,
     totalbalance: state.totalb,
+    acct: state.account,
     totalcredit: state.totalc,
     totaldebit: state.totald,
     loadingr: state.loading
@@ -73,7 +81,8 @@ const mapStateToProps = state =>{
 };
 const mapToStateDispatch = dispatch =>{
   return {
-    fetchuserinfo: () => dispatch(fetchUserinfo())
+    fetchuserinfo: () => dispatch(fetchUserinfo()),
+    postAccount: (account) => dispatch(fetchCredit(account))
   };
 };
 export default connect(mapStateToProps, mapToStateDispatch)(App);

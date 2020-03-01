@@ -1,7 +1,9 @@
 import * as actionType from '../actions/actionType';
 
 const initializeState = {
+  user_id: '',
   user: '',
+  account: '',
   occpt: '',
   totalb: '',
   totalc: '',
@@ -19,17 +21,33 @@ const reducer = (state = initializeState, action) => {
         loading: true
       };
     case actionType.FETCH_USERINFO_SUCCESS:
-      console.log('data', action.data);
       return {
         ...state,
-        user: action.username,
-        occpt: action.occupation,
+        user_id: action.userid,
+        account: action.acct,
         totalb: action.totalBalance,
-        totalc: action.totalCredit,
-        totald: action.totalDebit,
+        user: action.username,
         loading: false
       };
     case actionType.FETCH_USERINFO_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.error
+      };
+    case actionType.FETCH_CREDICT_START:
+      return {
+        ...state,
+        loading: true
+      };
+    case actionType.FETCH_CREDICT_SUCCESS:
+      return {
+        ...state,
+        totalc: action.totalcd,
+        totald: action.totaldb,
+        loading: false
+      };
+    case actionType.FETCH_CREDICT_FAIL:
       return {
         ...state,
         loading: false,
